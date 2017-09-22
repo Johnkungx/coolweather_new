@@ -1,5 +1,6 @@
 package com.example.gzz.coolweather_new;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.gzz.coolweather_new.gson.Forecast;
 import com.example.gzz.coolweather_new.gson.Weather;
+import com.example.gzz.coolweather_new.service.AutoUpdateService;
 import com.example.gzz.coolweather_new.util.HttpUtil;
 import com.example.gzz.coolweather_new.util.Utility;
 
@@ -93,10 +95,10 @@ public class WeatherActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this);
-                String weatherString = prefs.getString("weather", null);
-                Weather weather = Utility.handleWeatherResponse(weatherString);
-                mWeatherId = weather.basic.weatherId;
+//                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this);
+//                String weatherString = prefs.getString("weather", null);
+//                Weather weather = Utility.handleWeatherResponse(weatherString);
+//                mWeatherId = weather.basic.weatherId;
                 requestWeather(mWeatherId);
             }
         });
@@ -213,5 +215,8 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+
+        Intent intent = new Intent(WeatherActivity.this, AutoUpdateService.class);
+        startService(intent);
     }
 }
